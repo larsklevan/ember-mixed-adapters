@@ -23,4 +23,41 @@ export default function() {
 
     http://www.ember-cli-mirage.com/docs/v0.3.x/shorthands/
   */
+
+  this.get('/posts', function() {
+    return {
+      posts: [
+        {
+          id: 1,
+          title: 'All About Ember Adapters',
+          links: {
+            user: {
+              href: '/users/1'
+            }
+          }
+        },
+        {
+          id: 2,
+          title: 'Adapters N Things',
+          links: {
+            user: {
+              href: '/users/1'
+            }
+          }
+        }
+      ]
+    }
+  });
+
+  this.get('/users/:id', function() {
+    return {
+      data: {
+        id: 1,
+        type: 'users',
+        attributes: {
+          name: 'John Doe'
+        }
+      }
+    }
+  })
 }
