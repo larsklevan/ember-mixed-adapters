@@ -50,10 +50,8 @@ export default function() {
   });
 
   this.get('/users/:id', function(params, request) {
-    console.log({
-      Accept: request.requestHeaders.Accept
-    })
-    if (request.requestHeaders.Accept.match(/application\/vnd\.api+json/)) {
+    console.log(`Accept: ${request.requestHeaders.Accept}`);
+    if (request.requestHeaders.Accept.match(/application\/vnd\.api\+json/)) {
       return {
         data: {
           id: 1,
