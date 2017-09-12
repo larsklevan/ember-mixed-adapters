@@ -49,15 +49,27 @@ export default function() {
     }
   });
 
-  this.get('/users/:id', function() {
-    return {
-      data: {
-        id: 1,
-        type: 'users',
-        attributes: {
+  this.get('/users/:id', function(params, request) {
+    console.log({
+      Accept: request.requestHeaders.Accept
+    })
+    if (request.requestHeaders.Accept.match(/application\/vnd\.api+json/)) {
+      return {
+        data: {
+          id: 1,
+          type: 'users',
+          attributes: {
+            name: 'John Doe'
+          }
+        }
+      }
+    } else {
+      return {
+        user: {
+          id: 1,
           name: 'John Doe'
         }
       }
     }
-  })
+  });
 }
