@@ -4,6 +4,8 @@ Example:
 
 If I have a model `post` using `RESTAdapter` / `RESTSerializer` and `user` using `JSONAPIAdapter` and `JSONAPISerializer` then if I do `this.get('store').findRecord('user', 1)` I get the expected `Accept` header of "application/vnd.api+json" but if I do `post.get('user')` I get "application/json, text/javascript, */*; q=0.01". This then fails to deserialize with "Assertion Failed: normalizeResponse must return a valid JSON API document"
 
+![Console Output](./adapters-error.png)
+
 Setup:
 
 adapters/post.js
