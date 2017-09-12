@@ -1,50 +1,51 @@
-# ember-mixed-adapters
+I'm trying to convert our back-end API from a standard Rails API to JSONAPI with backward compatibility using the "Accept" header. I'm trying to convert one of my Ember models from REST to JSONAPI but when I traverse a `belongsTo` I don't get the expected "Accept" header.
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Example:
 
-## Prerequisites
+If I have a model `post` using `RESTAdapter` / `RESTSerializer` and `user` using `JSONAPIAdapter` and `JSONAPISerializer` then if I do `this.get('store').findRecord('user', 1)` I get the expected `Accept` header of "application/vnd.api+json" but if I do `post.get('user')` I get "application/json, text/javascript, */*; q=0.01". This then fails to deserialize with "Assertion Failed: normalizeResponse must return a valid JSON API document"
 
-You will need the following things properly installed on your computer.
+Setup:
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with NPM)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+adapters/post.js
 
-## Installation
+```js
+import DS from 'ember-data';
+export default DS.RESTAdapter.extend({});
+```
 
-* `git clone <repository-url>` this repository
-* `cd ember-mixed-adapters`
-* `npm install`
+adapters/user.js
 
-## Running / Development
+```js
+import DS from 'ember-data';
+export default DS.JSONAPIAdapter.extend({});
+```
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+models/post.js
 
-### Code Generators
+```js
+import DS from 'ember-data';
+export default DS.Model.extend({
+  user: DS.belongsTo('user')
+});
+```
 
-Make use of the many generators for code, try `ember help generate` for more details
+models/user.js
 
-### Running Tests
+```js
+import DS from 'ember-data';
+export default DS.Model.extend({});
+```
 
-* `ember test`
-* `ember test --server`
+serializers/post.js
 
-### Building
+```js
+import DS from 'ember-data';
+export default DS.RESTSerializer.extend({});
+```
 
-* `ember build` (development)
-* `ember build --environment production` (production)
+serializers/user.js
 
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+```js
+import DS from 'ember-data';
+export default DS.JSONAPISerializer.extend({});
+```
